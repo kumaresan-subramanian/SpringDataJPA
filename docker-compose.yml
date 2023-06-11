@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  postgres:
+    container_name: postgresql_db
+    image: postgres
+    restart: always
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: springdata
+      POSTGRES_PASSWORD: springdata
+      POSTGRES_DB: springdata
+    ports:
+      - "5432:5432"
+    networks:
+      - "springdata-jpa-net"
+
+  springdata-jpa-ws:
+    container_name: springdata-jpa-ws
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - "springdata-jpa-net"
+    restart: on-failure
+
+volumes:
+  postgres:
+
+networks:
+  springdata-jpa-net:
